@@ -76,6 +76,8 @@ before_install:
   - if [[ ${USE_NUMBA} = true ]]; then PKGS="${PKGS} numba"; if [[ ${NUMBA} ]]; then PKGS="${PKGS}=${NUMBA}";  fi; fi;
   - conda create --yes --quiet -n arch-test ${PKGS} ${OPTIONAL} statsmodels
   - source activate arch-test
+    # TODO: SciPy rc testing, remove after release
+  - if [[ -z ${SCIPY} ]]; then conda remove scipy --force && pip install scipy==1.0.0rc2; fi;
   - pip install flake8 nbconvert nbformat pytest coverage coveralls pytest-cov codecov pytest-xdist
   - if [[ ${STATSMODELS_MASTER} = true ]]; then sh ./ci/statsmodels-master.sh; fi;
   - if [[ ${DOCBUILD} = true ]]; then conda install sphinx ipython doctr numpydoc -c conda-forge; fi;
